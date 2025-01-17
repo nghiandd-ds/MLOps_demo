@@ -1,0 +1,57 @@
+artifact_path: rf_model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.4
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.0
+mlflow_version: 2.19.0
+model_size_bytes: 33820683
+model_uuid: e58f916be06b426195ad6284fa2225ae
+run_id: d22a63d9bd28475cbda6422a344b104d
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "double", "name": "LIMIT_BAL_scaler", "required": true}, {"type":
+    "double", "name": "AGE_scaler", "required": true}, {"type": "double", "name":
+    "BILL_AMT1_scaler", "required": true}, {"type": "double", "name": "BILL_AMT2_scaler",
+    "required": true}, {"type": "double", "name": "BILL_AMT3_scaler", "required":
+    true}, {"type": "double", "name": "BILL_AMT4_scaler", "required": true}, {"type":
+    "double", "name": "BILL_AMT5_scaler", "required": true}, {"type": "double", "name":
+    "BILL_AMT6_scaler", "required": true}, {"type": "double", "name": "PAY_AMT1_scaler",
+    "required": true}, {"type": "double", "name": "PAY_AMT2_scaler", "required": true},
+    {"type": "double", "name": "PAY_AMT3_scaler", "required": true}, {"type": "double",
+    "name": "PAY_AMT4_scaler", "required": true}, {"type": "double", "name": "PAY_AMT5_scaler",
+    "required": true}, {"type": "double", "name": "PAY_AMT6_scaler", "required": true},
+    {"type": "double", "name": "Num_of_month_payment_delayed_1_scaler", "required":
+    true}, {"type": "double", "name": "Num_of_month_payment_delayed_2_scaler", "required":
+    true}, {"type": "double", "name": "Num_of_month_payment_delayed_3_scaler", "required":
+    true}, {"type": "double", "name": "Num_of_month_payment_delayed_4_scaler", "required":
+    true}, {"type": "double", "name": "Num_of_month_payment_delayed_5_scaler", "required":
+    true}, {"type": "double", "name": "Num_of_month_payment_delayed_6_scaler", "required":
+    true}, {"type": "double", "name": "is_pay_duly_1_scaler", "required": true}, {"type":
+    "double", "name": "is_pay_duly_2_scaler", "required": true}, {"type": "double",
+    "name": "is_pay_duly_3_scaler", "required": true}, {"type": "double", "name":
+    "is_pay_duly_4_scaler", "required": true}, {"type": "double", "name": "is_pay_duly_5_scaler",
+    "required": true}, {"type": "double", "name": "is_pay_duly_6_scaler", "required":
+    true}, {"type": "double", "name": "MALE_scaler", "required": true}, {"type": "double",
+    "name": "MARRIAGE_MARRIED_scaler", "required": true}, {"type": "double", "name":
+    "MARRIAGE_SINGLE_scaler", "required": true}, {"type": "double", "name": "MARRIAGE_OTHER_scaler",
+    "required": true}, {"type": "double", "name": "EDU_GRAD_scaler", "required": true},
+    {"type": "double", "name": "EDU_UNIVER_scaler", "required": true}, {"type": "double",
+    "name": "EDU_HIGH_scaler", "required": true}, {"type": "double", "name": "EDU_OTHER_scaler",
+    "required": true}]'
+  outputs: '[{"type": "long", "required": true}]'
+  params: null
+utc_time_created: '2025-01-07 04:26:51.960357'
