@@ -3,7 +3,7 @@ import pandas as pd
 import sklearn
 import streamlit
 import joblib
-from pipeline_version.v1.pipeline import data_pipeline
+from sklearn.preprocessing import StandardScaler
 
 class data_pipeline():
     def data_transform_pipeline(self, data):
