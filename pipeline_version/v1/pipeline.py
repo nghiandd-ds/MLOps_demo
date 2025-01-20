@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 import joblib
 from sklearn.preprocessing import StandardScaler
 
@@ -50,8 +51,10 @@ class data_pipeline():
         else:
             return 0
 
-    def __init__(self, data, pipeline_info):
-        self.pipeline_info = joblib.load(pipeline_info)
+    def __init__(self, data):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, "pipeline_info.pkl")
+        self.pipeline_info = joblib.load(file_path)
         self.data = self.data_transform_pipeline(data=data)
         version_control = "Data pipeline version 1.0"
 
@@ -75,4 +78,4 @@ validation_data = joblib.load('validation_data.pkl')
 def test_pipeline():
     assert (len(validation_data["input_data"]) > 0)
     assert (len(validation_data["input_data"]) == len(validation_data["output_data"]))
-    assert ((data_pipeline(validation_data["input_data"], 'pipeline_info.pkl').fit() != validation_data["output_data"]).sum().sum() == 0)
+    assert ((data_pipeline(validation_data["input_data"]).fit() != validation_data["output_data"]).sum().sum() == 0)
