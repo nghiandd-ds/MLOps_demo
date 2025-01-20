@@ -3,7 +3,7 @@ import pandas as pd
 import sklearn
 import streamlit
 import joblib
-from pipeline_version.v1.pipeline import data_pipeline()
+from pipeline_version.v1.pipeline import data_pipeline
 
 def main():
     st.title("CSV Prediction App")
