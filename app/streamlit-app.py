@@ -87,12 +87,11 @@ def main():
 
         # Preprocess the data
         st.write("Preprocessing Data...")
-        pipeline_info = '../model_versions/champion_model/model.pkl'
-        processed_data = data_pipeline(data)
+        processed_data = data_pipeline(data).fit()
 
         # Load model and make predictions
-        champion_model = joblib.load("../model_versions/champion_model/model.pkl")
-        predictions = champion_model.predict(processed_data).fit()
+        champion_model = joblib.load("/model_versions/champion_model/model.pkl")
+        predictions = champion_model.predict(processed_data)
 
         # Display predictions
         st.write("Predictions:")
