@@ -3,4 +3,3 @@ numpy
 scikit-learn
 streamlit
 joblib
-git+https://github.com/your-username/your-repository.git
