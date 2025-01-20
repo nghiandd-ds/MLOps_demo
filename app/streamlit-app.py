@@ -55,7 +55,8 @@ class data_pipeline():
     def __init__(self, data):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(current_dir, "pipeline_info.pkl")
-        self.pipeline_info = joblib.load(file_path)
+        print(file_path)
+        self.pipeline_info = joblib.load("pipeline_version/v1/pipeline_info.pkl")
         self.data = self.data_transform_pipeline(data=data)
         version_control = "Data pipeline version 1.0"
 
