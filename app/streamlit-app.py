@@ -53,10 +53,8 @@ class data_pipeline():
             return 0
 
     def __init__(self, data):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(current_dir, "pipeline_info.pkl")
-        print(file_path)
-        self.pipeline_info = joblib.load("pipeline_version/v1/pipeline_info.pkl")
+
+        self.pipeline_info = joblib.load("../pipeline_version/v1/pipeline_info.pkl")
         self.data = self.data_transform_pipeline(data=data)
         version_control = "Data pipeline version 1.0"
 
@@ -90,7 +88,7 @@ def main():
         processed_data = data_pipeline(data).fit()
 
         # Load model and make predictions
-        champion_model = joblib.load("/model_versions/champion_model/model.pkl")
+        champion_model = joblib.load("../model_versions/champion_model/model.pkl")
         predictions = champion_model.predict(processed_data)
 
         # Display predictions
