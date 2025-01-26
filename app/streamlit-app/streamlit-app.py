@@ -16,7 +16,7 @@ def get_path(version, call_file):
             return(path)
 
 # Get data pipeline and model information
-info = joblib.load("model_info.pkl")
+info = joblib.load(get_path("streamlit-app","model_info.pkl"))
 
 
 # Load and run pipeline
