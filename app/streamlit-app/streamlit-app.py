@@ -3,7 +3,7 @@ import pandas as pd
 import sklearn
 import streamlit as st
 import joblib
-import importlib
+import importlib.util
 import os
 from sklearn.preprocessing import StandardScaler
 
