@@ -36,4 +36,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
+
+        python -m pytest ./pipeline_version/v1/pipeline_test_for_CI.py
         python -m pytest ./app/streamlit-app/streamlit-app.py

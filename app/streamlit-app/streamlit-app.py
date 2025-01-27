@@ -32,11 +32,16 @@ spec.loader.exec_module(data_pipeline)
 # Load data pipeline info
 data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info.pkl")
 
+# Load sample data
+validation_data = get_path(version = info['data_pipeline'], call_file = "validation_data.pkl")
+
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
 
-
+# Sort input columns
+input_data_columns = data_info["Input data"].copy()
+input_data_columns.sort()
 
 # Test load file
 def test_loading():
@@ -47,6 +52,8 @@ def test_loading():
     assert (check_load == 'Success')
     assert (data_info != None)
     assert (model_info != None)
+
+
 
 def test_data_for_model():
     feature_in_model = champion_model.feature_names_in_.tolist()
@@ -70,18 +77,24 @@ def main():
         data = pd.read_csv(uploaded_file)
         st.write("Uploaded Data:")
         st.dataframe(data.describe().T)
+        columns_in_file = data.columns.tolist().copy()
+        columns_in_file.sort()
 
-        # Preprocess the data
-        st.write("Preprocessed Data:")
-        processed_data = data_pipeline.data_pipeline(data, data_info).fit()
-        st.dataframe(processed_data.describe().T)
+        if all(elem in columns_in_file for elem in input_data_columns)
+            # Preprocess the data
+            st.write("Preprocessed Data:")
+            processed_data = data_pipeline.data_pipeline(data[columns_in_file], data_info).fit()
+            st.dataframe(processed_data.describe().T)
 
-        # Load model and make predictions
-        predictions = champion_model.predict(processed_data)
+            # Load model and make predictions
+            predictions = champion_model.predict(processed_data)
 
-        # Display predictions
-        st.write("Predictions:")
-        st.dataframe(pd.DataFrame(predictions, columns=["Prediction"]).head())
+            # Display predictions
+            st.write("Predictions:")
+            st.dataframe(pd.DataFrame(predictions, columns=["Prediction"]).head())
+        else:
+            st.write("Wrong data. Please make sure required columns are in the dataset")
+            st.dataframe(pd.DataFrame({'Columns' : columns_in_file}))
 
 if __name__ == "__main__":
     main()
