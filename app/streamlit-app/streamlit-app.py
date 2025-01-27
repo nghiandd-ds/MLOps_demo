@@ -32,15 +32,13 @@ spec.loader.exec_module(data_pipeline)
 # Load data pipeline info
 data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info.pkl")
 
-# Load sample data
-validation_data = get_path(version = info['data_pipeline'], call_file = "validation_data.pkl")
 
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
 
 # Sort input columns
-input_data_columns = data_info['Input_data'].copy()
+input_data_columns = joblib.load(data_info)['Input_data']
 input_data_columns.sort()
 
 # Test load file
