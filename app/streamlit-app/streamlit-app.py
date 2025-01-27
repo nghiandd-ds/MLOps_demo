@@ -38,7 +38,8 @@ model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
 
 # Sort input columns
-input_data_columns = joblib.load(data_info)['Input_data']
+input_data_order = joblib.load(data_info)['Input_data']
+input_data_columns = input_data_order.copy()
 input_data_columns.sort()
 
 # Test load file
@@ -82,7 +83,7 @@ def main():
             # Preprocess the data
             st.write("Preprocessed Data:")
             st.write(data[columns_in_file].columns)
-            processed_data = data_pipeline.data_pipeline(data=data[columns_in_file], file_path=data_info).fit()
+            processed_data = data_pipeline.data_pipeline(data=data[input_data_order], file_path=data_info).fit()
             st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
