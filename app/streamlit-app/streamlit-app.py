@@ -80,7 +80,7 @@ def main():
         columns_in_file = data.columns.tolist().copy()
         columns_in_file.sort()
 
-        if all(elem in columns_in_file for elem in input_data_columns)
+        if all(elem in columns_in_file for elem in input_data_columns):
             # Preprocess the data
             st.write("Preprocessed Data:")
             processed_data = data_pipeline.data_pipeline(data[columns_in_file], data_info).fit()
