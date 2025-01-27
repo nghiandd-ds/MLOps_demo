@@ -29,7 +29,7 @@ def test_loading():
 
 
 # Load data kiểm thử
-validation_data = joblib.load('validation_data.pkl')
+validation_data = joblib.load(get_path(version, call_file = 'validation_data.pkl'))
 info = get_path(version, call_file = "pipeline_info.pkl")
 
 # Test function
