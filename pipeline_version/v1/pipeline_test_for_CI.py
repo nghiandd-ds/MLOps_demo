@@ -6,7 +6,7 @@ def get_path(version, call_file):
     parent_folder = os.path.dirname(os.getcwd())
     for root, dirs, files in os.walk(parent_folder):
         if (call_file in files) and (version in root):
-            path = root + "\\" + call_file
+            path = root + "/" + call_file
             return(path)
 
 # pre-set version for test
