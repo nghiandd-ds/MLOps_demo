@@ -40,7 +40,7 @@ model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
 
 # Sort input columns
-input_data_columns = data_info["Input data"].copy()
+input_data_columns = data_info['Input_data'].copy()
 input_data_columns.sort()
 
 # Test load file
