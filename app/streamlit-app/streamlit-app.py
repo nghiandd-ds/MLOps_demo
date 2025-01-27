@@ -82,7 +82,7 @@ def main():
             # Preprocess the data
             st.write("Preprocessed Data:")
             st.write(data[columns_in_file].columns)
-            processed_data = data_pipeline.data_pipeline(data=data[columns_in_file], data_info).fit()
+            processed_data = data_pipeline.data_pipeline(data=data[columns_in_file], file_path=data_info).fit()
             st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
