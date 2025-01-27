@@ -59,7 +59,7 @@ def main():
         st.dataframe(data.describe().T)
 
         # Preprocess the data
-        st.write("Preprocessing Data...")
+        st.write("Preprocessed Data:")
         processed_data = data_pipeline.data_pipeline(data, data_info).fit()
         st.dataframe(processed_data.describe().T)
 
