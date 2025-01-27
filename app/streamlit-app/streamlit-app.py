@@ -28,12 +28,23 @@ data_pipeline = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(data_pipeline)
 
 
+
 # Load data pipeline info
 data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info.pkl")
 
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 
+
+# Test load file
+def test_loading():
+    if hasattr(data_pipeline, "data_pipeline") and callable(getattr(data_pipeline, "data_pipeline")):
+        check_load = 'Success'
+    else:
+        check_load = 'Failed'
+    assert (check_load == 'Success')
+    assert (data_info != None)
+    assert (model_info != None)
 
 def main():
     st.title("CSV Prediction App")
@@ -45,11 +56,12 @@ def main():
         # Read the uploaded CSV file
         data = pd.read_csv(uploaded_file)
         st.write("Uploaded Data:")
-        st.dataframe(data.head())
+        st.dataframe(data.describe().T)
 
         # Preprocess the data
         st.write("Preprocessing Data...")
         processed_data = data_pipeline.data_pipeline(data, data_info).fit()
+        st.dataframe(processed_data.describe().T)
 
         # Load model and make predictions
         champion_model = joblib.load(model_info)
