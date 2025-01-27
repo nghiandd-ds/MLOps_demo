@@ -34,6 +34,8 @@ data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info
 
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
+champion_model = joblib.load(model_info)
+
 
 
 # Test load file
@@ -45,6 +47,17 @@ def test_loading():
     assert (check_load == 'Success')
     assert (data_info != None)
     assert (model_info != None)
+
+def test_data_for_model():
+    feature_in_model = champion_model.feature_names_in_.tolist()
+    pipeline = joblib.load(data_info)
+    if pipeline['Scaler'] is not None:
+        feature_in_pipeline = pipeline['Columns']
+    else:
+        feature_in_pipeline = [i + '_scaler' for i in pipeline['Columns']]
+    feature_in_model.sort()
+    feature_in_pipeline.sort()
+    assert (feature_in_model == feature_in_pipeline)
 
 def main():
     st.title("CSV Prediction App")
@@ -64,7 +77,6 @@ def main():
         st.dataframe(processed_data.describe().T)
 
         # Load model and make predictions
-        champion_model = joblib.load(model_info)
         predictions = champion_model.predict(processed_data)
 
         # Display predictions
