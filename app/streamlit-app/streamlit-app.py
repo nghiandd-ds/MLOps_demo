@@ -51,7 +51,7 @@ def test_loading():
 def test_data_for_model():
     feature_in_model = champion_model.feature_names_in_.tolist()
     pipeline = joblib.load(data_info)
-    if pipeline['Scaler'] is not None:
+    if pipeline['Scaler'] is None:
         feature_in_pipeline = pipeline['Columns']
     else:
         feature_in_pipeline = [i + '_scaler' for i in pipeline['Columns']]
