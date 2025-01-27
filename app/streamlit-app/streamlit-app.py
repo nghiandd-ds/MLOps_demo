@@ -81,7 +81,8 @@ def main():
         if all(elem in columns_in_file for elem in input_data_columns):
             # Preprocess the data
             st.write("Preprocessed Data:")
-            processed_data = data_pipeline.data_pipeline(data[columns_in_file], data_info).fit()
+            st.write(data[columns_in_file].columns)
+            processed_data = data_pipeline.data_pipeline(data=data[columns_in_file], data_info).fit()
             st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
