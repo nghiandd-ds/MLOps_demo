@@ -82,7 +82,6 @@ def main():
         if all(elem in columns_in_file for elem in input_data_columns):
             # Preprocess the data
             st.write("Preprocessed Data:")
-            st.write(data[columns_in_file].columns)
             processed_data = data_pipeline.data_pipeline(data=data[input_data_order], file_path=data_info).fit()
             st.dataframe(processed_data.describe().T)
 
@@ -92,7 +91,7 @@ def main():
             # Display predictions
             st.write("Predictions:")
             st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = predictions[1]
+            data['Predictions'] = predictions[:1]
             st.download_button(
                 label="Download prediction",
                 data=data.to_csv(index=False),
