@@ -6,7 +6,7 @@ import joblib
 import importlib.util
 import os
 from sklearn.preprocessing import StandardScaler
-from itertools import chain
+
 
 # Function to get path of file
 def get_path(version, call_file):
@@ -91,7 +91,7 @@ def main():
             # Display predictions
             st.write("Predictions:")
             st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = list(chain.from_iterable(predictions.T[1]))
+            data['Predictions'] = predictions.T[1]
             st.download_button(
                 label="Download prediction",
                 data=data.to_csv(index=False),
