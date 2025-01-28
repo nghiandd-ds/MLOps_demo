@@ -91,7 +91,7 @@ def main():
             # Display predictions
             st.write("Predictions:")
             st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = list(chain.from_iterable(predictions.T[:0]))
+            data['Predictions'] = list(chain.from_iterable(predictions.T[:2]))
             st.download_button(
                 label="Download prediction",
                 data=data.to_csv(index=False),
