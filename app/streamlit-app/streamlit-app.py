@@ -87,11 +87,18 @@ def main():
             st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
-            predictions = champion_model.predict(processed_data)
+            predictions = champion_model.predict_proba(processed_data)
 
             # Display predictions
             st.write("Predictions:")
-            st.dataframe(pd.DataFrame(predictions, columns=["Prediction"]).head())
+            st.write("Click the button below to download the CSV file:")
+            data['Predictions'] = predictions
+            st.download_button(
+                label="Download prediction",
+                data=data.to_csv(index=False),
+                file_name="prediction.csv",
+                mime="text/csv"
+            )
         else:
             st.write("Wrong data. Please make sure required columns are in the dataset")
             st.dataframe(pd.DataFrame({'Columns' : columns_in_file}))
