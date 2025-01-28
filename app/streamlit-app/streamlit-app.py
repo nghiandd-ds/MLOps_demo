@@ -92,7 +92,7 @@ def main():
             # Display predictions
             st.write("Predictions:")
             st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = predictions
+            data['Predictions'] = predictions[1]
             st.download_button(
                 label="Download prediction",
                 data=data.to_csv(index=False),
