@@ -86,12 +86,12 @@ def main():
             st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
-            predictions = champion_model.predict_proba(processed_data)
+            predictions = champion_model.predict_proba(processed_data[champion_model.feature_names_in_.tolist()])
 
             # Display predictions
             st.write("Predictions:")
             st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = predictions[:1]
+            data['Predictions'] = predictions.T[:1]
             st.download_button(
                 label="Download prediction",
                 data=data.to_csv(index=False),
