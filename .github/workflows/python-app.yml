@@ -90,5 +90,6 @@ jobs:
 
       - name: Test ready for deployment
         run: |
+          python -m pytest ./.github/workflows/CI_check_update_model.py
           python -m pytest ./app/streamlit-app/streamlit-app.py
 
