@@ -90,4 +90,4 @@ jobs:
 
       - name: Test ready for deployment
         run: |
-          python -m pytest ./app/streamlit-app/streamlit-app.py
+          pytest streamlit-app.py
