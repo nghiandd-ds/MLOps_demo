@@ -55,5 +55,5 @@ def test_data_for_model():
     assert feature_in_model == feature_in_pipeline, "ERROR: Data pipeline does not match with model."
 
 def test_prediction():
-    predict_proba = champion_model.predict_proba(data_pipeline.data_pipeline(validation_data["input_data"], data_info).fit())
+    predict_proba = champion_model.predict_proba(data_pipeline.data_pipeline(validation_data["input_data"], data_info).fit()).T[1]
     assert len(set(predict_proba)) > 1, "ERROR: Model only return 1 similar prediction for all observations."
