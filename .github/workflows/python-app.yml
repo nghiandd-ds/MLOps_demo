@@ -90,5 +90,5 @@ jobs:
 
       - name: Test ready for deployment
         run: |
-          pytest streamlit-app.py
+          python -m pytest ./app/streamlit-app/streamlit-app.py
 
