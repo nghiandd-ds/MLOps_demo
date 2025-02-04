@@ -14,9 +14,7 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.12
@@ -37,7 +35,9 @@ jobs:
 
 
   Test_integration:
+    needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -73,6 +73,7 @@ jobs:
           python -m pytest CI_check_update_model.py
 
   Test_ready_for_deployment:
+    needs: Test_integration
     runs-on: ubuntu-latest
     steps:
     - name: Test data pipeline with pytest

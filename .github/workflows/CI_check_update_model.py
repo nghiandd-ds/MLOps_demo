@@ -39,9 +39,9 @@ validation_data = joblib.load(get_path(version = info['data_pipeline'], call_fil
 
 # Test function
 def test_data_pipeline():
-    assert (len(validation_data["input_data"]) > 0, "ERROR: No validation data found.")
-    assert (len(validation_data["input_data"]) == len(validation_data["output_data"]), "ERROR: Input and output of validation data did not match.")
-    assert ((data_pipeline.data_pipeline(validation_data["input_data"], data_info).fit() != validation_data["output_data"]).sum().sum() == 0, "ERROR: Data pipeline did not return expected result.")
+    assert len(validation_data["input_data"]) > 0, "ERROR: No validation data found."
+    assert len(validation_data["input_data"]) == len(validation_data["output_data"]), "ERROR: Input and output of validation data did not match."
+    assert (data_pipeline.data_pipeline(validation_data["input_data"], data_info).fit() != validation_data["output_data"]).sum().sum() == 0, "ERROR: Data pipeline did not return expected result."
 
 def test_data_for_model():
     feature_in_model = champion_model.feature_names_in_.tolist()
@@ -52,8 +52,8 @@ def test_data_for_model():
         feature_in_pipeline = [i + '_scaler' for i in pipeline['Columns']]
     feature_in_model.sort()
     feature_in_pipeline.sort()
-    assert (feature_in_model == feature_in_pipeline, "ERROR: Data pipeline does not match with model.")
+    assert feature_in_model == feature_in_pipeline, "ERROR: Data pipeline does not match with model."
 
 def test_prediction():
     predict_proba = champion_model.predict_proba(data_pipeline.data_pipeline(validation_data["input_data"], data_info).fit())
-    assert (len(set(predict_proba)) > 1, "ERROR: Model only return 1 similar prediction for all observations.")
+    assert len(set(predict_proba)) > 1, "ERROR: Model only return 1 similar prediction for all observations."
