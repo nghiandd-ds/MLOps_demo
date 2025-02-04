@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.10
+    - name: Set up Python 3.12
       uses: actions/setup-python@v3
       with:
         python-version: "3.12"
@@ -34,7 +34,47 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
+
+
+  Test_integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # To be able to get changed files
+
+      - name: Get changed model
+        id: changed-model
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            model_versions/champion_model/**
+
+      - name: Get changed data pipeline
+        id: changed-data-pipeline
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            pipeline_version/**
+
+      - name: Get changed app info
+        id: changed-app-info
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            app/streamlit-app/model_info.pkl
+
+      - name: Check if model was modified
+        if: steps.changed-model.outputs.any_changed == 'true' || 
+            steps.changed-data-pipeline.outputs.any_changed == 'true' || 
+            steps.changed-app-info.outputs.any_changed == 'true'
+        run: |
+          python -m pytest CI_check_update_model.py
+
+  Test_ready_for_deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test data pipeline with pytest
       run: |
-        python -m pytest ./pipeline_version/v1/pipeline_test_for_CI.py
         python -m pytest ./app/streamlit-app/streamlit-app.py

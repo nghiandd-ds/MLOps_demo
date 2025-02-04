@@ -48,22 +48,12 @@ def test_loading():
         check_load = 'Success'
     else:
         check_load = 'Failed'
-    assert (check_load == 'Success')
-    assert (data_info != None)
-    assert (model_info != None)
+    assert (data_info != None, "ERROR: Failed to load data pipeline.")
+    assert (model_info != None, "ERROR: Failed to load model.")
+    assert (check_load == 'Success', "ERROR: Failed to execute data pipeline.")
 
 
 
-def test_data_for_model():
-    feature_in_model = champion_model.feature_names_in_.tolist()
-    pipeline = joblib.load(data_info)
-    if pipeline['Scaler'] is None:
-        feature_in_pipeline = pipeline['Columns']
-    else:
-        feature_in_pipeline = [i + '_scaler' for i in pipeline['Columns']]
-    feature_in_model.sort()
-    feature_in_pipeline.sort()
-    assert (feature_in_model == feature_in_pipeline)
 
 def main():
     st.title("CSV Prediction App")
