@@ -48,9 +48,9 @@ def test_loading():
         check_load = 'Success'
     else:
         check_load = 'Failed'
-    assert data_info != None, "ERROR: Failed to load data pipeline."
-    assert model_info != None, "ERROR: Failed to load model."
-    assert check_load == 'Success', "ERROR: Failed to execute data pipeline."
+    assert (data_info != None)
+    assert (model_info != None)
+    assert (check_load == 'Success')
 
 
 
