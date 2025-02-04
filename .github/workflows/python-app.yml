@@ -91,3 +91,4 @@ jobs:
       - name: Test ready for deployment
         run: |
           pytest streamlit-app.py
+
