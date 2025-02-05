@@ -127,7 +127,7 @@ def main():
                 model_artifact = load_json(get_path(version = 'champion_model',
                                                     call_file = 'input_example.json'))
                 variable = []
-                for i in input_data_columns:
+                for i in champion_model.feature_names_in_:
                     csi = monitoring.calculate_csi(baseline = model_artifact[i],
                                                    current = processed_data[i])
                     ar = monitoring.ar(Y = data['y_label'], X = processed_data[i])
