@@ -10,7 +10,7 @@ on:
     branches: [ "main", "nghiandd" ]
 
 permissions:
-  contents: read
+  contents: read, write
 
 jobs:
   Test_syntax:
