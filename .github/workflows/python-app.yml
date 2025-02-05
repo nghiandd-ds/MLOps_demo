@@ -50,6 +50,9 @@ jobs:
       run: |
         python function/create_SQLlite_db.py
 
+    - name: Ensure Data Folder Exists
+      run: mkdir -p data
+
     - name: Commit and push database update
       run: |
         git config --global user.name "nghiandd-ds"
