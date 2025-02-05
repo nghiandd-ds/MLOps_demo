@@ -97,14 +97,13 @@ def main():
     if uploaded_file is not None:
         # Read the uploaded CSV file
         data = pd.read_csv(uploaded_file)
-        st.write("Uploaded Data:")
+
         columns_in_file = data.columns.tolist().copy()
         columns_in_file.sort()
         y_label = 'default payment next month'
 
         if all(elem in columns_in_file for elem in input_data_columns):
             # Preprocess the data
-            st.write("Preprocessed Data:")
             processed_data = data_pipeline.data_pipeline(data=data[input_data_order], file_path=data_info).fit()
 
             # Load model and make predictions
@@ -130,10 +129,11 @@ def main():
                 for i in champion_model.feature_names_in_:
                     csi = monitoring.calculate_csi(baseline = model_artifact[i],
                                                    current = processed_data[i])
-                    ar = monitoring.ar(Y = data['y_label'], X = processed_data[i])
+                    ar = monitoring.ar(Y = data[y_label], X = processed_data[i])
                     variable.append([i, ar, csi])
 
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
+                st.write("Monitoring result:")
                 st.dataframe(variable)
 
         else:
