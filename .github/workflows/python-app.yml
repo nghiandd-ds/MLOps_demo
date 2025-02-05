@@ -50,6 +50,14 @@ jobs:
       run: |
         python function/create_SQLlite_db.py
 
+    - name: Commit and push database update
+      run: |
+        git config --global user.name "nghiandd-ds"
+        git config --global user.email "nguyend.d.nghia@gmail.com"
+        git add data/data.db
+        git commit -m "Update SQLite database [CI Auto-Update]" || exit 0
+        git push origin main        
+
   Test_integration:
     needs: Test_syntax
     runs-on: ubuntu-latest
