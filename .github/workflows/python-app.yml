@@ -52,6 +52,7 @@ jobs:
 
     - name: Ensure Data Folder Exists
       run: mkdir -p data
+
     - name: Configure Git Credentials
       run: |
         git config --global user.name "github-actions[bot]"
