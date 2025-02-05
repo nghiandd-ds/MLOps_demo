@@ -133,7 +133,11 @@ def main():
                     variable.append([i, ar, csi])
 
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
+                st.write("Model used: " + type(champion_model))
+                st.dataframe(pd.DataFrame(champion_model.get_params().items(), columns=["Parameter", "Value"]))
                 st.write("Monitoring result:")
+                st.write("Model AR: " + str(monitoring.ar(Y = data[y_label], X = predictions.T[1])))
+                st.write("By variables: ")
                 st.dataframe(variable)
 
         else:
