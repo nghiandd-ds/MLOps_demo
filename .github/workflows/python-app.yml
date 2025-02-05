@@ -52,14 +52,17 @@ jobs:
 
     - name: Ensure Data Folder Exists
       run: mkdir -p data
+    - name: Configure Git Credentials
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions@github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/nghiandd-ds/MLOps_demo.git
 
     - name: Commit and push database update
       run: |
-        git config --global user.name "nghiandd-ds"
-        git config --global user.email "nguyend.d.nghia@gmail.com"
         git add data/data.db
         git commit -m "Update SQLite database [CI Auto-Update]" || exit 0
-        git push -u origin nghiandd
+        git push -u origin     
 
   Test_integration:
     needs: Test_syntax
