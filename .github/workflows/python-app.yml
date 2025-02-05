@@ -110,7 +110,10 @@ jobs:
         python -m pytest ./.github/workflows/CI_check_update_model.py
 
   Test_ready_for_deployment:
-    needs: Test_integration
+    needs:
+      - Config_database
+      - Test_integration
+
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

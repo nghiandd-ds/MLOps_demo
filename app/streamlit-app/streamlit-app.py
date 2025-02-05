@@ -42,6 +42,17 @@ input_data_order = joblib.load(data_info)['Input_data']
 input_data_columns = input_data_order.copy()
 input_data_columns.sort()
 
+# Test connect to database
+def check_sqlite_connection():
+    db_path = get_path(version = "data", call_file = "data.db")
+    try:
+        conn = sqlite3.connect(db_path)  # Connect to SQLite database
+        status = "Success"
+        conn.close()  # Close connection
+    except sqlite3.Error as err:
+        status = "Failed"
+    assert status == 'Success', "Can't connect to database."
+
 # Test load file
 def test_loading():
     if hasattr(data_pipeline, "data_pipeline") and callable(getattr(data_pipeline, "data_pipeline")):
