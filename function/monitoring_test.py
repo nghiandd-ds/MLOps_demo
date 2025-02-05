@@ -21,7 +21,7 @@ def calculate_csi(baseline, current, bins=10, add_bin_zero=False):
 
     else:
         bin_edges = np.histogram_bin_edges(baseline, bins=bins)
-    print(bin_edges)
+    #print(bin_edges)
     # Step 2: Calculate the proportion of baseline and current in each bin
     baseline_counts, _ = np.histogram(baseline, bins=bin_edges)
     current_counts, _ = np.histogram(current, bins=bin_edges)
@@ -32,8 +32,8 @@ def calculate_csi(baseline, current, bins=10, add_bin_zero=False):
     # Step 4: Replace zeros to avoid division and log errors
     baseline_proportions = np.where(baseline_proportions == 0, (1 - 0.05 ** (1 / len(baseline))), baseline_proportions)
     current_proportions = np.where(current_proportions == 0, (1 - 0.05 ** (1 / len(current))), current_proportions)
-    print(baseline_proportions)
-    print(current_proportions)
+    #print(baseline_proportions)
+    #print(current_proportions)
     # Step 5: Calculate CSI using the formula
     csi = np.sum((current_proportions - baseline_proportions) * np.log(current_proportions / baseline_proportions))
     return csi

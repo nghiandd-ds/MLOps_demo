@@ -6,7 +6,7 @@ import joblib
 import importlib.util
 import os
 from sklearn.preprocessing import StandardScaler
-
+import json
 
 # Function to get path of file
 def get_path(version, call_file):
@@ -15,6 +15,10 @@ def get_path(version, call_file):
         if (call_file in files) and (version in root):
             path = root + "/" + call_file
             return(path)
+def load_json(path):
+    with open(path, "r") as file:
+        data = json.load(file)
+    return pd.DataFrame(data['data'], columns=data['columns'])
 
 # Get data pipeline and model information
 info = joblib.load(get_path("streamlit-app","model_info.pkl"))
@@ -27,7 +31,12 @@ spec = importlib.util.spec_from_file_location("data_pipeline",
 data_pipeline = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(data_pipeline)
 
-
+# Load and run monitoring test
+tester = importlib.util.spec_from_file_location("monitoring",
+                                              get_path(version = "function",
+                                                       call_file = "monitoring_test.py"))
+monitoring = importlib.util.module_from_spec(tester)
+tester.loader.exec_module(monitoring)
 
 # Load data pipeline info
 data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info.pkl")
@@ -53,16 +62,29 @@ def check_sqlite_connection():
         status = "Failed"
     assert status == 'Success', "Can't connect to database."
 
-# Test load file
-def test_loading():
+# Test load data pipeline
+def test_load_data_pipeline():
     if hasattr(data_pipeline, "data_pipeline") and callable(getattr(data_pipeline, "data_pipeline")):
         check_load = 'Success'
     else:
         check_load = 'Failed'
-    assert (data_info != None)
-    assert (model_info != None)
-    assert (check_load == 'Success')
+    assert data_info != None, "ERROR: Fail to load data pipeline."
+    assert model_info != None, "ERROR: Fail to load data pipeline."
+    assert check_load == 'Success', "ERROR: Fail to load data pipeline."
 
+# Test load data pipeline
+def test_load_monitoring_test():
+    if hasattr(monitoring, "calculate_csi") and callable(getattr(monitoring, "calculate_csi")):
+        check_csi = 'Success'
+    else:
+        check_csi = 'Failed'
+    if hasattr(monitoring, "ar") and callable(getattr(monitoring, "ar")):
+        check_ar = 'Success'
+    else:
+        check_ar = 'Failed'
+
+    assert check_csi == 'Success', "ERROR: Fail to load CSI test."
+    assert check_ar == 'Success', "ERROR: Fail to load AR test."
 
 
 
@@ -76,29 +98,44 @@ def main():
         # Read the uploaded CSV file
         data = pd.read_csv(uploaded_file)
         st.write("Uploaded Data:")
-        st.dataframe(data.describe().T)
         columns_in_file = data.columns.tolist().copy()
         columns_in_file.sort()
+        y_label = 'default payment next month'
 
         if all(elem in columns_in_file for elem in input_data_columns):
             # Preprocess the data
             st.write("Preprocessed Data:")
             processed_data = data_pipeline.data_pipeline(data=data[input_data_order], file_path=data_info).fit()
-            st.dataframe(processed_data.describe().T)
 
             # Load model and make predictions
             predictions = champion_model.predict_proba(processed_data[champion_model.feature_names_in_.tolist()])
+            # Case 1: uploaded data doesn't have y_label
+            if y_label not in columns_in_file:
+                # Display predictions
+                st.write("Predictions:")
+                st.write("Click the button below to download the CSV file:")
+                data['Predictions'] = predictions.T[1]
+                st.download_button(
+                    label="Download prediction",
+                    data=data.to_csv(index=False),
+                    file_name="prediction.csv",
+                    mime="text/csv"
+                )
+            # Case 2: uploaded data have y_label
+            else:
+                # Load model artifact (input data)
+                model_artifact = load_json(get_path(version = 'champion_model',
+                                                    call_file = 'input_example.json'))
+                variable = []
+                for i in input_data_columns:
+                    csi = monitoring.calculate_csi(baseline = model_artifact[i],
+                                                   current = processed_data[i])
+                    ar = monitoring.ar(Y = data['y_label'], X = processed_data[i])
+                    variable.append([i, ar, csi])
 
-            # Display predictions
-            st.write("Predictions:")
-            st.write("Click the button below to download the CSV file:")
-            data['Predictions'] = predictions.T[1]
-            st.download_button(
-                label="Download prediction",
-                data=data.to_csv(index=False),
-                file_name="prediction.csv",
-                mime="text/csv"
-            )
+                variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
+                st.dataframe(variable)
+
         else:
             st.write("Wrong data. Please make sure required columns are in the dataset")
             st.dataframe(pd.DataFrame({'Columns' : columns_in_file}))
