@@ -1,4 +1,4 @@
-import numpy as np
+import sqlite3
 import pandas as pd
 import sklearn
 import streamlit as st
