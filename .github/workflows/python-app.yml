@@ -59,7 +59,7 @@ jobs:
         git config --global user.email "nguyend.d.nghia@gmail.com"
         git add data/data.db
         git commit -m "Update SQLite database [CI Auto-Update]" || exit 0
-        git push -u origin main nghiandd
+        git push -u origin nghiandd
 
   Test_integration:
     needs: Test_syntax
