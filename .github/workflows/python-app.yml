@@ -77,7 +77,7 @@ jobs:
           steps.changed-data-pipeline.outputs.any_changed == 'true' || 
           steps.changed-app-info.outputs.any_changed == 'true'
       run: |
-        python -m pytest CI_check_update_model.py
+        python -m pytest ./.github/workflows/CI_check_update_model.py
 
   Test_ready_for_deployment:
     needs: Test_integration
@@ -92,6 +92,5 @@ jobs:
 
     - name: Test ready for deployment
       run: |
-        python -m pytest ./.github/workflows/CI_check_update_model.py
         python -m pytest ./app/streamlit-app/streamlit-app.py
 
