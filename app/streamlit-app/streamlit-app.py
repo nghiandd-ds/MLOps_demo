@@ -99,7 +99,7 @@ def main():
     if uploaded_file is not None:
         # Read the uploaded CSV file
         data = pd.read_csv(uploaded_file)
-
+        upload_time = datetime.datetime.now()
         columns_in_file = data.columns.tolist().copy()
         columns_in_file.sort()
         y_label = 'default payment next month'
@@ -128,17 +128,16 @@ def main():
                 DB_PATH = get_path(version = "data", call_file = "data.db")
                 conn = sqlite3.connect(DB_PATH)
                 data_to_save = data.copy()
-                data_to_save['UPLOADED_TIME'] = datetime.datetime.now()
+                data_to_save['UPLOADED_TIME'] = upload_time
                 data_to_save.to_sql("accumulated_retrieval_data", conn,
                             if_exists="append", index=False)
 
-                # Display updated database table
-                df_updated = pd.read_sql("SELECT * FROM accumulated_retrieval_data", conn)
-                st.dataframe(df_updated.head())
+
                 conn.close()
+                # Push to Github
                 GITHUB_USERNAME = "nghiandd-ds"
                 GITHUB_REPO = "MLOps_demo"
-                GITHUB_TOKEN = st.secrets["github"]["token"] # Replace with your actual token
+                GITHUB_TOKEN = st.secrets["github"]["token"] # Token saved in streamlit cloud
                 GITHUB_URL = f"https://{GITHUB_USERNAME}:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
 
                 # Set up Git user
@@ -162,10 +161,16 @@ def main():
                     variable.append([i, ar, csi])
 
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
-                st.write("Model used: " + str(type(champion_model)))
-                st.dataframe(pd.DataFrame(champion_model.get_params().items(), columns=["Parameter", "Value"]))
                 st.write("Monitoring result:")
-                st.write("Model AR: " + str(monitoring.ar(Y = data[y_label], X = predictions.T[1])))
+                model_monitor = pd.DataFrame({
+                    'MODEL': str(type(champion_model)),
+                    'PARAMETER': champion_model.get_params(),
+                    'LAST_UPDATE': datetime.datetime.fromtimestamp(os.path.getmtime(model_info)),
+                    'MONITORING_TIME': upload_time,
+                    'AR' : monitoring.ar(Y = data[y_label], X = predictions.T[1]))
+                })
+                st.dataframe(model_monitor.T)
+                st.write("Monitoring result:")
                 st.write("By variables: ")
                 st.dataframe(variable)
 
