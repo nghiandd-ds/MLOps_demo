@@ -47,10 +47,6 @@ data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
-st.write(model_info)
-update_time = os.path.getmtime(model_info)
-st.write(update_time)
-st.write(datetime.datetime.fromtimestamp(update_time))
 
 # Sort input columns
 input_data_order = joblib.load(data_info)['Input_data']
@@ -167,11 +163,11 @@ def main():
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
                 st.write("Monitoring result:")
                 model_monitor = pd.DataFrame({
+                    'VERSION': [str(info)],
                     'MODEL': [f"{champion_model.__class__.__module__}.{champion_model.__class__.__name__}"],
                     'PARAMETER': [str(champion_model.get_params())],
-                    'LAST_UPDATE': [],
                     'MONITORING_TIME': [upload_time],
-                    'AR' : [monitoring.ar(Y = data[y_label], X = predictions.T[1])]
+                    'AR': [monitoring.ar(Y = data[y_label], X = predictions.T[1])]
                 })
                 st.dataframe(model_monitor.T)
                 st.write("Monitoring result:")
