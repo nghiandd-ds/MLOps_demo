@@ -44,6 +44,16 @@ CREATE TABLE IF NOT EXISTS accumulated_retrieval_data (
 );
 ''')
 
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS monitoring_result (
+                "VERSION" VARCHAR(MAX),
+                "MODEL" VARCHAR(MAX),
+                "PARAMETER" VARCHAR(MAX),
+                "MONITORING_TIME" DATE,
+                "AR" FLOAT
+);
+''')
+
 # Commit changes and close the connection
 conn.commit()
 

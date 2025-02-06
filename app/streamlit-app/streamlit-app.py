@@ -133,22 +133,7 @@ def main():
                             if_exists="append", index=False)
 
 
-                conn.close()
-                # Push to Github
-                GITHUB_USERNAME = "nghiandd-ds"
-                GITHUB_REPO = "MLOps_demo"
-                GITHUB_TOKEN = st.secrets["github"]["token"] # Token saved in streamlit cloud
-                GITHUB_URL = f"https://{GITHUB_USERNAME}:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
 
-                # Set up Git user
-                subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
-                subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
-                subprocess.run(["git", "remote", "set-url", "origin", GITHUB_URL], check=True)
-
-                # Add, commit, and push changes
-                subprocess.run(["git", "add", DB_PATH], check=True)
-                subprocess.run(["git", "commit", "-m", "Update SQLite DB"], check=True)  # Fixed commit message
-                subprocess.run(["git", "push", "origin"], check=True)
 
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
@@ -163,16 +148,39 @@ def main():
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
                 st.write("Monitoring result:")
                 model_monitor = pd.DataFrame({
+                    'INDEX' : ['Result'],
                     'VERSION': [str(info)],
                     'MODEL': [f"{champion_model.__class__.__module__}.{champion_model.__class__.__name__}"],
                     'PARAMETER': [str(champion_model.get_params())],
                     'MONITORING_TIME': [upload_time],
                     'AR': [monitoring.ar(Y = data[y_label], X = predictions.T[1])]
                 })
+                model_monitor = model_monitor.set_index('INDEX')
+                model_monitor.to_sql("monitoring_result", conn,
+                            if_exists="append", index=False)
+
                 st.dataframe(model_monitor.T)
                 st.write("Monitoring result:")
                 st.write("By variables: ")
                 st.dataframe(variable)
+
+                conn.close()
+
+                # Push to Github
+                GITHUB_USERNAME = "nghiandd-ds"
+                GITHUB_REPO = "MLOps_demo"
+                GITHUB_TOKEN = st.secrets["github"]["token"]  # Token saved in streamlit cloud
+                GITHUB_URL = f"https://{GITHUB_USERNAME}:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
+
+                # Set up Git user
+                subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
+                subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
+                subprocess.run(["git", "remote", "set-url", "origin", GITHUB_URL], check=True)
+
+                # Add, commit, and push changes
+                subprocess.run(["git", "add", DB_PATH], check=True)
+                subprocess.run(["git", "commit", "-m", "Update SQLite DB"], check=True)  # Fixed commit message
+                subprocess.run(["git", "push", "origin"], check=True)
 
         else:
             st.write("Wrong data. Please make sure required columns are in the dataset")
