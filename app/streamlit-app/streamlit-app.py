@@ -129,11 +129,10 @@ def main():
                 conn = sqlite3.connect(DB_PATH)
                 data_to_save = data.copy()
                 data_to_save['UPLOADED_TIME'] = datetime.datetime.now()
-                data.to_sql("accumulated_retrieval_data", conn,
+                data_to_save.to_sql("accumulated_retrieval_data", conn,
                             if_exists="append", index=False)
                 conn.close()
                 subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
-                subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
                 subprocess.run(["git", "remote", "set-url", "origin", "https://x-access-token:${{ secrets.GH_PAT }}@github.com/nghiandd-ds/MLOps_demo.git"])
                 subprocess.run(["git", "add", DB_PATH])
                 subprocess.run(["git", "commit", "-m", "Update SQLite DB"])
