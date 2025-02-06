@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS accumulated_retrieval_data (
                 "PAY_AMT5" FLOAT,
                 "PAY_AMT6" FLOAT,
                 "default payment next month" FLOAT,
-                "DATE6" FLOAT
+                "DATE6" FLOAT,
+                "UPLOADED_TIME" DATE
 );
 ''')
 

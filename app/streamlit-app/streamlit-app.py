@@ -7,6 +7,8 @@ import importlib.util
 import os
 from sklearn.preprocessing import StandardScaler
 import json
+import subprocess
+import datetime
 
 # Function to get path of file
 def get_path(version, call_file):
@@ -68,8 +70,8 @@ def test_load_data_pipeline():
         check_load = 'Success'
     else:
         check_load = 'Failed'
-    assert data_info != None, "ERROR: Fail to load data pipeline."
-    assert model_info != None, "ERROR: Fail to load data pipeline."
+    assert data_info is not None, "ERROR: Fail to load data pipeline."
+    assert model_info is not None, "ERROR: Fail to load data pipeline."
     assert check_load == 'Success', "ERROR: Fail to load data pipeline."
 
 # Test load data pipeline
@@ -122,6 +124,18 @@ def main():
                 )
             # Case 2: uploaded data have y_label
             else:
+                # Upload to DB
+                DB_PATH = get_path(version = "data", call_file = "data.db")
+                conn = sqlite3.connect(DB_PATH)
+                data_to_save = data.copy()
+                data_to_save['UPLOADED_TIME'] = datetime.datetime.now()
+                data.to_sql("accumulated_retrieval_data", conn,
+                            if_exists="append", index=False)
+                conn.close()
+                subprocess.run(["git", "add", DB_PATH])
+                subprocess.run(["git", "commit", "-m", "Update SQLite DB"])
+                subprocess.run(["git", "push", "origin", "main"])
+
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
                                                     call_file = 'input_example.json'))
