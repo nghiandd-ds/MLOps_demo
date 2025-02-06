@@ -128,7 +128,7 @@ def main():
                 DB_PATH = get_path(version = "data", call_file = "data.db")
                 conn = sqlite3.connect(DB_PATH)
                 data_to_save = data.copy()
-                data_to_save['UPLOADED_TIME'] = upload_time
+                data_to_save['MONITORING_TIME_UTC'] = upload_time
                 data_to_save.to_sql("accumulated_retrieval_data", conn,
                             if_exists="append", index=False)
 
@@ -146,13 +146,14 @@ def main():
                     variable.append([i, ar, csi])
 
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
+
                 st.write("Monitoring result:")
                 model_monitor = pd.DataFrame({
                     'INDEX' : ['Result'],
                     'VERSION': [str(info)],
                     'MODEL': [f"{champion_model.__class__.__module__}.{champion_model.__class__.__name__}"],
                     'PARAMETER': [str(champion_model.get_params())],
-                    'MONITORING_TIME': [upload_time],
+                    'MONITORING_TIME_UTC': [upload_time],
                     'TIME_FRAME': [str(set(data['DATE6']))],
                     'NUMER_OF_OBS': [len(data)],
                     'AR': [monitoring.ar(Y = data[y_label], X = predictions.T[1])]

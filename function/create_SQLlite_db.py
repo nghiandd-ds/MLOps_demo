@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS accumulated_retrieval_data (
                 "PAY_AMT6" FLOAT,
                 "default payment next month" FLOAT,
                 "DATE6" FLOAT,
-                "UPLOADED_TIME" DATE
+                "MONITORING_TIME_UTC" DATE
 );
 ''')
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS monitoring_result (
                 "VERSION" TEXT,
                 "MODEL" TEXT,
                 "PARAMETER" TEXT,
-                "MONITORING_TIME" DATE,
+                "MONITORING_TIME_UTC" DATE,
                 "TIME_FRAME" TEXT,
                 "NUMER_OF_OBS" FLOAT,
                 "AR" FLOAT
