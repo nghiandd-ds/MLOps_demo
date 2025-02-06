@@ -134,7 +134,7 @@ def main():
                 conn.close()
                 subprocess.run(["git", "add", DB_PATH])
                 subprocess.run(["git", "commit", "-m", "Update SQLite DB"])
-                subprocess.run(["git", "push", "origin", "main"])
+                subprocess.run(["git", "push", "origin"])
 
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
