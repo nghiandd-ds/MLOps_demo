@@ -132,9 +132,12 @@ def main():
                 data.to_sql("accumulated_retrieval_data", conn,
                             if_exists="append", index=False)
                 conn.close()
+                subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
+                subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
+                subprocess.run(["git", "remote", "set-url", "origin", "https://x-access-token:${{ secrets.GH_PAT }}@github.com/nghiandd-ds/MLOps_demo.git"])
                 subprocess.run(["git", "add", DB_PATH])
                 subprocess.run(["git", "commit", "-m", "Update SQLite DB"])
-                subprocess.run(["git", "push", "origin"])
+                subprocess.run(["git", "push", "-u", "origin"])
 
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
