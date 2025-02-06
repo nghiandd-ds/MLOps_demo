@@ -136,7 +136,6 @@ def main():
                 df_updated = pd.read_sql("SELECT * FROM accumulated_retrieval_data", conn)
                 st.dataframe(df_updated.head())
                 conn.close()
-                DB_PATH = "data.db"  # SQLite database file
                 GITHUB_USERNAME = "nghiandd-ds"
                 GITHUB_REPO = "MLOps_demo"
                 GITHUB_TOKEN = st.secrets["github"]["token"] # Replace with your actual token
@@ -150,7 +149,7 @@ def main():
                 # Add, commit, and push changes
                 subprocess.run(["git", "add", DB_PATH], check=True)
                 subprocess.run(["git", "commit", "-m", "Update SQLite DB"], check=True)  # Fixed commit message
-                subprocess.run(["git", "push", "origin", "main"], check=True)
+                subprocess.run(["git", "push", "origin"], check=True)
 
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
