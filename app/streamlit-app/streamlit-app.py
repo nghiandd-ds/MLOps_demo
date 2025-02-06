@@ -163,11 +163,11 @@ def main():
                 variable = pd.DataFrame(variable, columns = ["Variable", "AR", "CSI"])
                 st.write("Monitoring result:")
                 model_monitor = pd.DataFrame({
-                    'MODEL': str(type(champion_model)),
-                    'PARAMETER': str(champion_model.get_params()),
-                    'LAST_UPDATE': datetime.datetime.fromtimestamp(os.path.getmtime(model_info)),
-                    'MONITORING_TIME': upload_time,
-                    'AR' : monitoring.ar(Y = data[y_label], X = predictions.T[1])
+                    'MODEL': [f"{champion_model.__class__.__module__}.{champion_model.__class__.__name__}"],
+                    'PARAMETER': [str(champion_model.get_params())],
+                    'LAST_UPDATE': [datetime.datetime.fromtimestamp(os.path.getmtime(model_info))],
+                    'MONITORING_TIME': [upload_time],
+                    'AR' : [monitoring.ar(Y = data[y_label], X = predictions.T[1])]
                 })
                 st.dataframe(model_monitor.T)
                 st.write("Monitoring result:")
