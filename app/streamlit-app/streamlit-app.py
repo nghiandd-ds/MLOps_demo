@@ -131,7 +131,12 @@ def main():
                 data_to_save['UPLOADED_TIME'] = datetime.datetime.now()
                 data_to_save.to_sql("accumulated_retrieval_data", conn,
                             if_exists="append", index=False)
+
+                # Display updated database table
+                df_updated = pd.read_sql("SELECT * FROM accumulated_retrieval_data", conn)
+                st.dataframe(df_updated)
                 conn.close()
+
                 subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
                 subprocess.run(["git", "remote", "set-url", "origin", "https://x-access-token:${{ secrets.GH_PAT }}@github.com/nghiandd-ds/MLOps_demo.git"])
                 subprocess.run(["git", "add", DB_PATH])
