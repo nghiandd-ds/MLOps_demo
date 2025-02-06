@@ -136,12 +136,21 @@ def main():
                 df_updated = pd.read_sql("SELECT * FROM accumulated_retrieval_data", conn)
                 st.dataframe(df_updated.head())
                 conn.close()
+                DB_PATH = "data.db"  # SQLite database file
+                GITHUB_USERNAME = "nghiandd-ds"
+                GITHUB_REPO = "MLOps_demo"
+                GITHUB_TOKEN = st.secrets["github"]["token"] # Replace with your actual token
+                GITHUB_URL = f"https://{GITHUB_USERNAME}:{GITHUB_TOKEN}@github.com/{GITHUB_USERNAME}/{GITHUB_REPO}.git"
+
+                # Set up Git user
                 subprocess.run(["git", "config", "--global", "user.email", "github-actions@github.com"])
                 subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
-                subprocess.run(["git", "remote", "set-url", "origin", "https://x-access-token:${{ secrets.GH_PAT }}@github.com/nghiandd-ds/MLOps_demo.git"])
-                subprocess.run(["git", "add", DB_PATH])
-                subprocess.run(["git", "commit", "-m", "'Update SQLite DB'"])
-                subprocess.run(["git", "push", "-u", "origin"])
+                subprocess.run(["git", "remote", "set-url", "origin", GITHUB_URL], check=True)
+
+                # Add, commit, and push changes
+                subprocess.run(["git", "add", DB_PATH], check=True)
+                subprocess.run(["git", "commit", "-m", "Update SQLite DB"], check=True)  # Fixed commit message
+                subprocess.run(["git", "push", "origin", "main"], check=True)
 
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
