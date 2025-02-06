@@ -134,7 +134,7 @@ def main():
 
                 # Display updated database table
                 df_updated = pd.read_sql("SELECT * FROM accumulated_retrieval_data", conn)
-                st.dataframe(df_updated)
+                st.dataframe(df_updated.head())
                 conn.close()
 
                 subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
