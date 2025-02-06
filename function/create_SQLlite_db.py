@@ -46,9 +46,9 @@ CREATE TABLE IF NOT EXISTS accumulated_retrieval_data (
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS monitoring_result (
-                "VERSION" VARCHAR(MAX),
-                "MODEL" VARCHAR(MAX),
-                "PARAMETER" VARCHAR(MAX),
+                "VERSION" TEXT,
+                "MODEL" TEXT,
+                "PARAMETER" TEXT,
                 "MONITORING_TIME" DATE,
                 "AR" FLOAT
 );
