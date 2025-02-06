@@ -47,6 +47,8 @@ data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
+st.write(model_info)
+st.write(os.path.getmtime(model_info))
 
 # Sort input columns
 input_data_order = joblib.load(data_info)['Input_data']
