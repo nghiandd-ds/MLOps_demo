@@ -164,7 +164,7 @@ def main():
                 st.write("Monitoring result:")
                 model_monitor = pd.DataFrame({
                     'MODEL': str(type(champion_model)),
-                    'PARAMETER': champion_model.get_params(),
+                    'PARAMETER': str(champion_model.get_params()),
                     'LAST_UPDATE': datetime.datetime.fromtimestamp(os.path.getmtime(model_info)),
                     'MONITORING_TIME': upload_time,
                     'AR' : monitoring.ar(Y = data[y_label], X = predictions.T[1])
