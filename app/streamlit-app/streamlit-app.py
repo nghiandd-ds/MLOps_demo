@@ -153,6 +153,8 @@ def main():
                     'MODEL': [f"{champion_model.__class__.__module__}.{champion_model.__class__.__name__}"],
                     'PARAMETER': [str(champion_model.get_params())],
                     'MONITORING_TIME': [upload_time],
+                    'TIME_FRAME': [str(set(data['DATE6']))],
+                    'NUMER_OF_OBS': [len(data)],
                     'AR': [monitoring.ar(Y = data[y_label], X = predictions.T[1])]
                 })
                 model_monitor = model_monitor.set_index('INDEX')

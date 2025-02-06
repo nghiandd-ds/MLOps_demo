@@ -50,6 +50,8 @@ CREATE TABLE IF NOT EXISTS monitoring_result (
                 "MODEL" TEXT,
                 "PARAMETER" TEXT,
                 "MONITORING_TIME" DATE,
+                "TIME_FRAME" TEXT,
+                "NUMER_OF_OBS" FLOAT,
                 "AR" FLOAT
 );
 ''')
