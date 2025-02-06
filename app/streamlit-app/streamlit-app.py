@@ -167,7 +167,7 @@ def main():
                     'PARAMETER': champion_model.get_params(),
                     'LAST_UPDATE': datetime.datetime.fromtimestamp(os.path.getmtime(model_info)),
                     'MONITORING_TIME': upload_time,
-                    'AR' : monitoring.ar(Y = data[y_label], X = predictions.T[1]))
+                    'AR' : monitoring.ar(Y = data[y_label], X = predictions.T[1])
                 })
                 st.dataframe(model_monitor.T)
                 st.write("Monitoring result:")
