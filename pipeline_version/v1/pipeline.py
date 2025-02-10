@@ -32,10 +32,7 @@ class data_pipeline():
         data.loc[:, 'EDU_HIGH'] = [1 if x == 3 else 0 for x in data['EDUCATION']]
         data.loc[:, 'EDU_OTHER'] = [1 if x == 4 else 0 for x in data['EDUCATION']]
 
-        data = data[data['AGE'] >= 18].copy().drop([
-            'PAY_1', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6',
-            'MARRIAGE', 'EDUCATION', 'SEX', 'DATE6'
-        ], axis=1).reset_index(drop=True)
+        data = data[data['AGE'] >= 18][self.pipeline_info['Columns']].copy()
 
         return data
 
@@ -68,4 +65,7 @@ class data_pipeline():
             X_data = self.pipeline_info['Scaler'].transform(self.data[self.pipeline_info['Columns']])
             X_data = pd.DataFrame(X_data).set_axis(X_data_col_names, axis=1)
             return X_data
-
+    def update_pipeline(self):
+        updated_scaler = StandardScaler().fit(X = self.data)
+        return {'Scaler': updated_scaler,
+                'Columns':  self.data.columns.to_list()}

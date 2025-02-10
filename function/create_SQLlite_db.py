@@ -56,9 +56,20 @@ CREATE TABLE IF NOT EXISTS monitoring_result (
 );
 ''')
 
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS training_log (
+                "OLD_VERSION" TEXT,
+                "NEW_VERSION" TEXT,
+                "UPDATE_LOG" TEXT,
+                "PIPELINE_FOLDER" TEXT,
+                "MODEL_FOLDER" TEXT,
+);
+''')
+
 # Commit changes and close the connection
 conn.commit()
 
-
+# Close the connection to DB
+conn.close()
 
 

@@ -133,8 +133,6 @@ def main():
                             if_exists="append", index=False)
 
 
-
-
                 # Load model artifact (input data)
                 model_artifact = load_json(get_path(version = 'champion_model',
                                                     call_file = 'input_example.json'))
