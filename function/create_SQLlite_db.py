@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS training_log (
                 "NEW_VERSION" TEXT,
                 "UPDATE_LOG" TEXT,
                 "PIPELINE_FOLDER" TEXT,
-                "MODEL_FOLDER" TEXT,
+                "MODEL_FOLDER" TEXT
 );
 ''')
 
