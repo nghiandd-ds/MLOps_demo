@@ -99,7 +99,7 @@ established_model = joblib.load(model_path)
 import_model = f"from {established_model.__class__.__module__} import {established_model.__class__.__name__}"
 exec(import_model)
 
-model = exec(established_model.__class__.__name__)
+model = eval(established_model.__class__.__name__)
 
 # Fit new model
 new_model = model(**established_model.get_params())
