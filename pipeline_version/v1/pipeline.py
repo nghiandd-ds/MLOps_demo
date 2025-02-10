@@ -50,6 +50,7 @@ class data_pipeline():
 
     def __init__(self, data, file_path):
         self.pipeline_info = joblib.load(file_path)
+        self.Input_data = self.data.columns.to_list()
         self.data = self.data_transform_pipeline(data=data)
         version_control = "Data pipeline version 1.0"
 
@@ -68,4 +69,6 @@ class data_pipeline():
     def update_pipeline(self):
         updated_scaler = StandardScaler().fit(X = self.data)
         return {'Scaler': updated_scaler,
-                'Columns':  self.data.columns.to_list()}
+                'Columns':  self.data.columns.to_list(),
+                'Input_data': self.Input_data
+                }
