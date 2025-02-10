@@ -16,7 +16,6 @@ def get_path(version, call_file):
 # Get data pipeline and model information
 info = joblib.load(get_path("streamlit-app","model_info.pkl"))
 
-
 # Load and run pipeline
 spec = importlib.util.spec_from_file_location("data_pipeline",
                                               get_path(version = info['data_pipeline'],
@@ -24,15 +23,12 @@ spec = importlib.util.spec_from_file_location("data_pipeline",
 data_pipeline = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(data_pipeline)
 
-
 # Load data pipeline info
 data_info = get_path(version = info['data_pipeline'], call_file = "pipeline_info.pkl")
-
 
 # Load model info
 model_info = get_path(version = info['model'], call_file = "model.pkl")
 champion_model = joblib.load(model_info)
-
 
 # Load validation data
 validation_data = joblib.load(get_path(version = info['data_pipeline'], call_file = 'validation_data.pkl'))
